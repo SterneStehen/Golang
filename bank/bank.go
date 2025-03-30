@@ -4,16 +4,23 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"errors"
 )
 
 const accounName = "balance.txt"
 
-func getBalance()(float64){
-	read, _ := os.ReadFile(accounName)
+func getBalance()(float64, error){
+	read, err := os.ReadFile(accounName)
+	if err != nil{
+		return 0, errors.New("Failed to read balance  file")
+	}
 	readStr := string(read)
-	readFloat, _ := strconv.ParseFloat(readStr, 64)
-	fmt.Println("read file result is ", readFloat)
-	return readFloat
+	readFloat, err := strconv.ParseFloat(readStr, 64)
+	if err != nil{
+		return 0, errors.New("failed to parse string to float")
+	}
+	fmt.Println("Read balance ", readFloat)
+	return readFloat, nil
 }
 
 func writeBalance(balance float64){
@@ -25,15 +32,19 @@ func writeBalance(balance float64){
 func main(){
 	var depositAmount float64
 	var depositWithdtaw float64
-	accounBallance := getBalance()
-
+	accounBallance, err := getBalance()
+	if err != nil{
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		//panic("Can`t continue, sorry.")
+	}
 	fmt.Println("Welcome to Go Bank!")
 	for {
 		fmt.Println("\nWhat do you want to do?")
 		fmt.Println("1.Check balance")
 		fmt.Println("2.Deposit money")
 		fmt.Println("3.Withdtaw money")
-		fmt.Println("4.Exit")
+		fmt.Println("4.Exit\n")
 
 		var choice int
 		fmt.Print("Your choice:  ")
@@ -64,7 +75,7 @@ func main(){
 					writeBalance(accounBallance)
 					fmt.Println("\nbalance updated. new amout: ", accounBallance)
 					} else if choice == 4{
-						getBalance()
+						//_, err := getBalance()
 						fmt.Println("Good bay!")
 			return	
 		} else {

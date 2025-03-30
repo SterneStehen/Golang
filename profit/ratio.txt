@@ -1,0 +1,3 @@
+EBT is 1000
+profit is 950
+ratio is 1.0526315789473684
