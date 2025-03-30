@@ -1,11 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+const accounName = "balance.txt"
+
+func getBalance()(float64){
+	read, _ := os.ReadFile(accounName)
+	readStr := string(read)
+	readFloat, _ := strconv.ParseFloat(readStr, 64)
+	fmt.Println("read file result is ", readFloat)
+	return readFloat
+}
+
+func writeBalance(balance float64){
+	// var data srting
+	data := fmt.Sprint(balance)
+	os.WriteFile(accounName, []byte(data), 0644)
+}
 
 func main(){
-	accounBallance := 1000.0
 	var depositAmount float64
 	var depositWithdtaw float64
+	accounBallance := getBalance()
 
 	fmt.Println("Welcome to Go Bank!")
 	for {
@@ -31,22 +51,25 @@ func main(){
 				fmt.Print("Your deposit: ")
 				fmt.Scan(&depositAmount)
 				accounBallance = accounBallance + depositAmount
+				writeBalance(accounBallance)
 				fmt.Println("\nbalance updated. new amout: ", accounBallance)
 				} else if choice == 3{
 					fmt.Print("Your Withdtaw: ")
 					fmt.Scan(&depositWithdtaw)
 					if depositWithdtaw > accounBallance{
-						fmt.Println("\nError. deposit Withdtaw mare than balans/")
+						fmt.Println("\nError. deposit Withdtaw mare than balans. try again")
 						continue
 					}
 					accounBallance = accounBallance - depositWithdtaw
+					writeBalance(accounBallance)
 					fmt.Println("\nbalance updated. new amout: ", accounBallance)
 					} else if choice == 4{
+						getBalance()
 						fmt.Println("Good bay!")
 			return	
 		} else {
 			fmt.Println("Error. Try again")
 		}
 	}
-	
+
 }
