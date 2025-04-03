@@ -10,9 +10,9 @@ import (
 )
 
 type Note struct{
-	Title string
-	Content string
-	CurTime time.Time
+	Title string `json:"title"`
+	Content string `json:"content"`
+	CurTime time.Time `json:"crated_at"`
 }
 
 func  NewNote(titleN, ContentN string) (Note, error){
