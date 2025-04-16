@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 import "time"
+import "gorutin/channel"
+import "gorutin/msg"
 
 func loopSay(name string){
 	for i:=1; i <= 3; i++{
@@ -21,4 +23,6 @@ func main(){
 	go loopSay("Nik")
 	go loopSay("Daryna")
 	time.Sleep(time.Second *3)
+	channel.Chann()
+	msg.GreatMain()
 }
